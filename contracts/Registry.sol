@@ -42,21 +42,21 @@ contract Registry is IRegistry {
         usernameDoesNotExist(_username)
         checkUsername(_username)
     {
-        usernameExists[addressToUsername[tx.origin]] = false;
+        usernameExists[addressToUsername[msg.sender]] = false;
         usernameExists[_username] = true;
 
-        usernameToAddress[addressToUsername[tx.origin]] = address(0);
-        usernameToAddress[_username] = tx.origin;
+        usernameToAddress[addressToUsername[msg.sender]] = address(0);
+        usernameToAddress[_username] = msg.sender;
         
-        addressToUsername[tx.origin] = _username;
+        addressToUsername[msg.sender] = _username;
     }
 
     function removeUsername() external
-        accountHasUsername(tx.origin)
+        accountHasUsername(msg.sender)
     {
-        usernameExists[addressToUsername[tx.origin]] = false;
-        usernameToAddress[addressToUsername[tx.origin]] = address(0);
-        addressToUsername[tx.origin] = "";
+        usernameExists[addressToUsername[msg.sender]] = false;
+        usernameToAddress[addressToUsername[msg.sender]] = address(0);
+        addressToUsername[msg.sender] = "";
     }
 
     function getUsername(address _account) external
